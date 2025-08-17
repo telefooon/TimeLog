@@ -12,18 +12,8 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
-public class SpringSecurity{
+@Configuration
+public class SpringSecurity {
 
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/hello").permitAll()   // instead of .antMatchers
-                        .anyRequest().authenticated()
-                )
-                .formLogin(withDefaults()); // default login form
-
-        return http.build();
-    }
+    
 }
