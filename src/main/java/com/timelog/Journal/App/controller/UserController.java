@@ -2,12 +2,15 @@ package com.timelog.Journal.App.controller;
 
 import com.timelog.Journal.App.entity.JournalEntry;
 import com.timelog.Journal.App.entity.User;
+import com.timelog.Journal.App.repository.UserRepo;
 import com.timelog.Journal.App.service.JournalEntryService;
 import com.timelog.Journal.App.service.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -21,26 +24,26 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public List<User> getAllUsers(){
-        return userService.getAll();
+    @Autowired
+    private UserRepo userRepo;
+
+    @PutMapping
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User userInDb = userService.findByusername(username);
+        userInDb.setUsername(user.getUsername());
+        userInDb.setPassword(user.getPassword());
+        userService.saveEntry(userInDb);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping
-    public void createUser(@RequestBody User user){
-        userService.saveEntry(user);
-    }
-
-    @PutMapping("/{username}")
-    public ResponseEntity<?> updateUser(@RequestBody User user, @PathVariable String username){
-       User userInDb = userService.findByusername(username);
-
-       if(userInDb != null){
-           userInDb.setUsername(user.getUsername());
-           userInDb.setPassword(user.getPassword());
-           userService.saveEntry(userInDb);
-       }
-       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    @DeleteMapping
+    public ResponseEntity<?> deleteUserbyUsername(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        userRepo.deleteByUsername(authentication.getName());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
 

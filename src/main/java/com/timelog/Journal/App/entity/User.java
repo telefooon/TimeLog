@@ -29,4 +29,6 @@ public class User {
     @DBRef // will store reference of a particular user
     private List<JournalEntry> journalEntries = new ArrayList<>();
 
+    private List<String> roles;
+
 }
