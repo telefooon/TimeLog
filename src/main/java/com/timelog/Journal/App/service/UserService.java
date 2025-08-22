@@ -23,7 +23,8 @@ public class UserService {
     public void saveEntry(User user){
 
         user.setPassword(password.encode(user.getPassword()));
-        user.setRoles(Arrays.asList("USER"));userRepo.save(user);
+        user.setRoles(Arrays.asList("USER"));
+        userRepo.save(user);
     }
 
     public List<User> getAll(){

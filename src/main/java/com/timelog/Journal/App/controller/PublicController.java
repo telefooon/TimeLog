@@ -21,8 +21,9 @@ public class PublicController {
     @Autowired
     private UserService userService;
 
-    @PutMapping("/create-user")
-    public void createUser(@RequestBody User user){
+    @PostMapping("/create-user")
+    public ResponseEntity<?> createUser(@RequestBody User user){
         userService.saveEntry(user);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
