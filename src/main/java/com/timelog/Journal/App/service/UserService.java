@@ -20,11 +20,17 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
 
-    public void saveEntry(User user){
+    public boolean saveEntry(User user){
+        try{
+            user.setPassword(password.encode(user.getPassword()));
+            user.setRoles(Arrays.asList("USER"));
+            userRepo.save(user);
+            return true;
+        }
+        catch(Exception e){
+            return false;
+        }
 
-        user.setPassword(password.encode(user.getPassword()));
-        user.setRoles(Arrays.asList("USER"));
-        userRepo.save(user);
     }
 
     public List<User> getAll(){
