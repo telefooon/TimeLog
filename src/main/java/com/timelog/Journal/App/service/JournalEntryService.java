@@ -4,6 +4,8 @@ import com.timelog.Journal.App.entity.JournalEntry;
 import com.timelog.Journal.App.entity.User;
 import com.timelog.Journal.App.repository.JournalEntryRepo;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +30,9 @@ public class JournalEntryService {
             journalEntry.setDate(LocalDateTime.now());
             JournalEntry saved = journalEntryRepo.save(journalEntry);
             user.getJournalEntries().add(saved);
-            userService.saveEntry(user);
+            userService.saveNewUser(user);
         }
         catch(Exception e){
-            System.out.println();
             throw new Exception(e);
         }
 
@@ -52,7 +53,7 @@ public class JournalEntryService {
     public void deletebyId(ObjectId id, String username){
         User user = userService.findByusername(username);
         user.getJournalEntries().removeIf(x -> x.getId().equals(id));
-        userService.saveEntry(user);
+        userService.saveNewUser(user);
         journalEntryRepo.deleteById(id);
     }
 }
