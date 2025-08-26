@@ -1,0 +1,11 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://khanfaaeiz:Aezakmi@cluster0.o0kntgq.mongodb.net/journaldb?retryWrites=true&w=majority&appName=Cluster0
+      auto-index-creation: true
+
+
+server:
+  port: 8080
+  servlet:
+    context-path: /TimeLog
