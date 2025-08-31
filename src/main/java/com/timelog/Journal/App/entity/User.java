@@ -27,7 +27,8 @@ public class User {
 
     @NonNull
     private String password;
-
+    private String email;
+    private String sentimentAnalysis;
     @DBRef // will store reference of a particular user
     private List<JournalEntry> journalEntries = new ArrayList<>();
 

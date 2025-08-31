@@ -1,5 +1,4 @@
 package com.timelog.Journal.App.config;
-
 import com.timelog.Journal.App.service.UserDetailServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

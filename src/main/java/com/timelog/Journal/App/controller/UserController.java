@@ -1,10 +1,12 @@
 package com.timelog.Journal.App.controller;
 
+import com.timelog.Journal.App.ApiResponse.WeatherApiResponse;
 import com.timelog.Journal.App.entity.JournalEntry;
 import com.timelog.Journal.App.entity.User;
 import com.timelog.Journal.App.repository.UserRepo;
 import com.timelog.Journal.App.service.JournalEntryService;
 import com.timelog.Journal.App.service.UserService;
+import com.timelog.Journal.App.service.WeatherService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,9 @@ public class UserController {
     @Autowired
     private UserRepo userRepo;
 
+    @Autowired
+    private WeatherService weatherService;
+
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody User user) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -44,6 +49,17 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userRepo.deleteByUsername(authentication.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> greetingsAmigos(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        WeatherApiResponse response = weatherService.getWeather("Delhi");
+        String greetings = "";
+        if(response != null){
+            greetings = ", Weather "+ response.getCurrent().getFeelslike();
+        }
+        return new ResponseEntity<>("Hi " + authentication.getName() + greetings,HttpStatus.OK);
     }
 }
 

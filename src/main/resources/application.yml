@@ -1,3 +1,28 @@
 spring:
-  profiles:
-    active: dev
+  data:
+    mongodb:
+      uri: mongodb+srv://khanfaaeiz:Aezakmi@cluster0.o0kntgq.mongodb.net/journaldb?retryWrites=true&w=majority&appName=Cluster0
+      auto-index-creation: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: khanfaaeiz@gmail.com
+    password: yyoq qgou afsd dsal
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+
+server:
+  port: 8080
+  servlet:
+    context-path: /TimeLog
+
+weather:
+  api:
+    key: 81ec7f6e32a1bddc8f053adb0a859257
+
