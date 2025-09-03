@@ -1,5 +1,6 @@
 package com.timelog.Journal.App.controller;
 
+import com.timelog.Journal.App.Cache.AppCache;
 import com.timelog.Journal.App.entity.User;
 import com.timelog.Journal.App.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,25 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/all-users")
-    public ResponseEntity<?> getAllUsers(){
-        List<User> all = userService.getAll();
+    @Autowired
+    private AppCache appCache;
 
-        if(all != null){
+    @GetMapping("/all-users")
+    public ResponseEntity<?> getAllUsers() {
+        List<User> all = userService.getAll();
+        if (all != null && !all.isEmpty()) {
             return new ResponseEntity<>(all, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @PostMapping("/create-admin-user")
+    public void createUser(@RequestBody User user) {
+        userService.saveAdmin(user);
+    }
+
+    @GetMapping("clear-app-cache")
+    public void clearAppCache(){
+        appCache.init();
     }
 }
